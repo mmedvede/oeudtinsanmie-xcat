@@ -20,7 +20,7 @@ class xcat::params {
           $cpcmd = 'cp'
         }
       }
-      if $lsbmajdistrelease == undef {
+      if $::lsbmajdistrelease == undef {
         $majrelease = $::operatingsystemmajrelease
       }
       else {
@@ -28,7 +28,7 @@ class xcat::params {
       }
 
       $xcatcore_mirror = 'http://sourceforge.net/projects/xcat/files/yum/2.8/xcat-core'
-      $xcatdep_mirror  = "http://sourceforge.net/projects/xcat/files/yum/xcat-dep/rh${majrelease}/${architecture}"
+      $xcatdep_mirror  = "http://sourceforge.net/projects/xcat/files/yum/xcat-dep/rh${majrelease}/${::architecture}"
       $key     = '/repodata/repomd.xml.key'
       $defaultrepo = {
         enabled  => 1,
@@ -56,12 +56,12 @@ class xcat::params {
   }
 
   $pkg_list = [
-    "tftp-server.${architecture}",
-    "xCAT.${architecture}",
-    "OpenIPMI.${architecture}",
+    "tftp-server.${::architecture}",
+    "xCAT.${::architecture}",
+    "OpenIPMI.${::architecture}",
     'ipmitool',
   ]
-  $pkg_exclude = [ "atftp-xcat.${architecture}" ]
+  $pkg_exclude = [ "atftp-xcat.${::architecture}" ]
 
   $firewalls = {
     '112 reject foward across vlans' => {
