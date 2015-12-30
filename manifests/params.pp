@@ -52,16 +52,15 @@ class xcat::params {
         'xcatd'   => {},
         'ipmi'    => {},
       }
+      $pkg_list = [
+        "tftp-server.${::architecture}",
+        "xCAT.${::architecture}",
+        "OpenIPMI.${::architecture}",
+        'ipmitool',
+      ]
+      $pkg_exclude = [ "atftp-xcat.${::architecture}" ]
     }
   }
-
-  $pkg_list = [
-    "tftp-server.${::architecture}",
-    "xCAT.${::architecture}",
-    "OpenIPMI.${::architecture}",
-    'ipmitool',
-  ]
-  $pkg_exclude = [ "atftp-xcat.${::architecture}" ]
 
   $firewalls = {
     '112 reject foward across vlans' => {
