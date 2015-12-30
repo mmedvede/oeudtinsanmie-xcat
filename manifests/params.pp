@@ -35,6 +35,7 @@ class xcat::params {
         gpgcheck => 1,
         tag  => 'xcatrepo',
       }
+      $repo_provider = 'yumrepo'
       $repos = {
         'xcat-2-core' => {
           descr => 'xCat 2 Core packages',
@@ -59,6 +60,42 @@ class xcat::params {
         'ipmitool',
       ]
       $pkg_exclude = [ "atftp-xcat.${::architecture}" ]
+    }
+    'Debian': {
+      $rmcmd = 'rm'
+      $cpcmd = 'cp'
+      $defaultrepo = {
+        release => $::lsbdistcodename,
+        repos   => 'main',
+        tag     => 'xcatrepo',
+        key     => {
+          id     => '47AE47C50C45D502AEA2A47520E475A8DA736C68',
+          server => 'pgp.mit.edu',
+        },
+      }
+      $repo_provider = 'apt::source'
+      $repos = {
+        'xcat-core' => {
+          comment  => 'xCat Core packages',
+          location => 'http://xcat.org/files/xcat/repos/apt/2.11/xcat-core',
+        },
+        'xcat-dep' => {
+          comment  => 'xCat Core dependencies',
+          location => 'http://xcat.org/files/xcat/repos/apt/xcat-dep',
+        },
+      }
+      $service_list = {
+        'xinetd'  => {},
+        'xcatd'   => {},
+        'ipmievd' => {},
+      }
+      $pkg_list = [
+        'tftpd-hpa',
+        'xcat',
+        'openipmi',
+        'ipmitool',
+      ]
+      $pkg_exclude = []
     }
   }
 

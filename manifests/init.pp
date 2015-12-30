@@ -11,7 +11,7 @@ class xcat(
   $templates = hiera_hash('xcat::templates', undef),
   $scripts = hiera_hash('xcat::scripts', undef),
 ) inherits xcat::params {
-  create_resources(yumrepo, $xcat::params::repos, $xcat::params::defaultrepo)
+  create_resources($xcat::params::repo_provider, $xcat::params::repos, $xcat::params::defaultrepo)
 
   package { $xcat::params::pkg_list :
     ensure => 'latest',
@@ -24,7 +24,14 @@ class xcat(
 
   create_resources(service, $xcat::params::service_list, $xcat::params::servicedefault)
 
-  Yumrepo <| tag == 'xcatrepo' |> -> Package <| tag == 'xcatpkg' |>  -> Service <| tag == 'xcat-service' |>
+  case $::osfamily {
+    'RedHat': {
+      Yumrepo <| tag == 'xcatrepo' |> -> Package <| tag == 'xcatpkg' |>  -> Service <| tag == 'xcat-service' |>
+    }
+    'Debian': {
+      Apt::Source <| tag == 'xcatrepo' |> -> Package <| tag == 'xcatpkg' |>  -> Service <| tag == 'xcat-service' |>
+    }
+  }
 
   Package <| tag == 'xcatpkg' |> -> Xcat::Template   <| |>
   Package <| tag == 'xcatpkg' |> -> Xcat::Image      <| |>
