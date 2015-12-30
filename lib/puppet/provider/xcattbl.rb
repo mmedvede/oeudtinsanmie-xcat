@@ -4,8 +4,8 @@ class Puppet::Provider::Xcattbl < Puppet::Provider::Xcatprovider
   # Without initvars commands won't work.
   initvars
   commands  :tabdump => '/opt/xcat/sbin/tabdump',
-            :chtab => '/opt/xcat/sbin/chtab'  
-         
+            :chtab => '/opt/xcat/sbin/chtab'
+
   def initialize(value={})
     super(value)
     @property_flush = {}
@@ -16,7 +16,7 @@ class Puppet::Provider::Xcattbl < Puppet::Provider::Xcatprovider
       new(make_hash(obj))
     }
   end
-  
+
   def self.prefetch(resources)
     instances.each do |prov|
       if resource = resources[prov.name]
@@ -28,11 +28,11 @@ class Puppet::Provider::Xcattbl < Puppet::Provider::Xcatprovider
   def exists?
     @property_hash[:ensure] == :present
   end
-  
+
   def create
     @property_flush[:ensure] = :present
   end
-  
+
   def destroy
     @property_flush[:ensure] = :absent
   end
@@ -43,7 +43,7 @@ class Puppet::Provider::Xcattbl < Puppet::Provider::Xcatprovider
     rescue Puppet::ExecutionFailure => e
       raise Puppet::DevError, "tabdump #{xcat_tbl} had an error -> #{e.inspect}"
     end
-    
+
     entry_strs = output.split("\n")
     @tblkeys = entry_strs.delete_at(0).delete("#").split(",")
     entry_strs
@@ -71,7 +71,7 @@ class Puppet::Provider::Xcattbl < Puppet::Provider::Xcatprovider
     }
     Puppet::Util::symbolizehash(inst_hash)
   end
-  
+
   def flush
     if (@property_flush[:ensure] == :absent) then
       cmd_list = [ "-d", "#{self.class.keycolumn}=#{resource[:name]}", ]
@@ -79,7 +79,7 @@ class Puppet::Provider::Xcattbl < Puppet::Provider::Xcatprovider
       cmd_list = [ "#{self.class.keycolumn}=#{resource[:name]}", ]
       resource.to_hash.each { |key, value|
         if not self.class.puppetkeywords.include?(key)
-          if (value.is_a?(Array)) then 
+          if (value.is_a?(Array)) then
             cmd_list += ["#{self.class.xcat_tbl}.#{key}=#{value.join(',')}"]
             Puppet.debug "Setting #{self.class.xcat_tbl}.#{key} = #{value.join(',')}"
           else
@@ -94,7 +94,7 @@ class Puppet::Provider::Xcattbl < Puppet::Provider::Xcatprovider
     rescue Puppet::ExecutionFailure => e
       raise Puppet::DevError, "chtab #{cmd_list.join(' ')} had an error -> #{e.inspect}"
     end
-    
+
   end
-  
+
 end

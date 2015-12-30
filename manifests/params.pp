@@ -1,23 +1,23 @@
 class xcat::params {
-  
+
   $servicedefault = {
     ensure => running,
     hasstatus => true,
     hasrestart => true,
     enable => true,
-    tag => "xcat-service",
+    tag => 'xcat-service',
   }
-  
+
   case $::osfamily {
     'RedHat': {
       case $::operatingsystem {
         'CentOS': {
-          $rmcmd = "/bin/rm"
-          $cpcmd = "/bin/cp"
+          $rmcmd = '/bin/rm'
+          $cpcmd = '/bin/cp'
         }
         default: {
-          $rmcmd = "rm"
-          $cpcmd = "cp"
+          $rmcmd = 'rm'
+          $cpcmd = 'cp'
         }
       }
       if $lsbmajdistrelease == undef {
@@ -33,7 +33,7 @@ class xcat::params {
       $defaultrepo = {
         enabled  => 1,
         gpgcheck => 1,
-        tag  => "xcatrepo",
+        tag  => 'xcatrepo',
       }
       $repos = {
         'xcat-2-core' => {
@@ -47,22 +47,22 @@ class xcat::params {
           gpgkey  => "${xcatdep_mirror}${key}",
         },
       }
-      $service_list = { 
-        "xinetd"  => {}, 
-        "xcatd"   => {},
-        "ipmi"    => {},
+      $service_list = {
+        'xinetd'  => {},
+        'xcatd'   => {},
+        'ipmi'    => {},
       }
     }
   }
 
-  $pkg_list = [ 
-	  "tftp-server.${architecture}", 
-	  "xCAT.${architecture}",
-	  "OpenIPMI.${architecture}",
-	  "ipmitool",
+  $pkg_list = [
+    "tftp-server.${architecture}",
+    "xCAT.${architecture}",
+    "OpenIPMI.${architecture}",
+    'ipmitool',
   ]
   $pkg_exclude = [ "atftp-xcat.${architecture}" ]
-  
+
   $firewalls = {
     '112 reject foward across vlans' => {
       chain => 'FORWARD',
@@ -70,7 +70,7 @@ class xcat::params {
       action => 'reject',
     },
   }
-  
-  $configphase  = "config"
-  $setupphase   = "setup"
+
+  $configphase  = 'config'
+  $setupphase   = 'setup'
 }

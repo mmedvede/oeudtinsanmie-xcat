@@ -3,7 +3,7 @@ Puppet::Type.newtype(:xcat_firmware) do
   @doc = 'Maps node to firmware values to be used for setup at node discovery or later'
 
   ensurable
-  
+
   newparam(:name, :namevar=>true) do
     desc 'node      The node id.'
   end
@@ -11,8 +11,8 @@ Puppet::Type.newtype(:xcat_firmware) do
   newparam(:cfgfile) do
     desc 'The file to use.'
   end
-  
-  newproperty(:comments) do 
+
+  newproperty(:comments) do
     desc 'Any user-written notes.'
   end
 

@@ -6,26 +6,26 @@ include stdlib
 # Removes duplicate packages that may be installed by default, but which interfere with xCAT
 #
 class xcat(
-  $mgmt = hiera_hash("xcat::mgmt", undef),
-  $images = hiera_hash("xcat::images", undef),
-  $templates = hiera_hash("xcat::templates", undef),
-  $scripts = hiera_hash("xcat::scripts", undef),
+  $mgmt = hiera_hash('xcat::mgmt', undef),
+  $images = hiera_hash('xcat::images', undef),
+  $templates = hiera_hash('xcat::templates', undef),
+  $scripts = hiera_hash('xcat::scripts', undef),
 ) inherits xcat::params {
   create_resources(yumrepo, $xcat::params::repos, $xcat::params::defaultrepo)
 
-  package { $xcat::params::pkg_list : 
-    ensure => "latest",
-    tag => 'xcatpkg',
+  package { $xcat::params::pkg_list :
+    ensure => 'latest',
+    tag    => 'xcatpkg',
   } ->
   package { $xcat::params::pkg_exclude :
-    ensure => "absent",
-    tag => 'xcatpkg',
+    ensure => 'absent',
+    tag    => 'xcatpkg',
   }
-  
+
   create_resources(service, $xcat::params::service_list, $xcat::params::servicedefault)
-  
-  Yumrepo <| tag == 'xcatrepo' |> -> Package <| tag == 'xcatpkg' |>  -> Service <| tag == "xcat-service" |>
-  
+
+  Yumrepo <| tag == 'xcatrepo' |> -> Package <| tag == 'xcatpkg' |>  -> Service <| tag == 'xcat-service' |>
+
   Package <| tag == 'xcatpkg' |> -> Xcat::Template   <| |>
   Package <| tag == 'xcatpkg' |> -> Xcat::Image      <| |>
   Package <| tag == 'xcatpkg' |> -> Xcat_boottarget  <| |>
@@ -40,7 +40,7 @@ class xcat(
   Package <| tag == 'xcatpkg' |> -> Xcat_network     <| |> -> Xcat_node<| |>
   Package <| tag == 'xcatpkg' |> -> Xcat_site_attribute <| |> ~> Service['xcatd']
   Xcat_network <| ensure == absent |> -> Xcat_network <| ensure != absent |>
-    
+
   ############## Mgmt Node #####################
   if $mgmt != undef {
     ensure_resource(xcat::mgmt, $mgmt)
@@ -50,12 +50,12 @@ class xcat(
   if $images != undef {
     create_resources(xcat::image, $images)
   }
-  
+
   ############## Templates ###################
   if $templates != undef {
     create_resources(xcat::template, $templates)
   }
-  
+
   ############## Pre/Post Scripts ############
   if $scripts != undef {
     create_resources(xcat::script, scripts)

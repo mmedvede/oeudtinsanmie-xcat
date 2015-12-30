@@ -1,17 +1,17 @@
 Puppet::Type.type(:xcat_copycds).provide(:xcat) do
 
   commands  :copycds => '/opt/xcat/sbin/copycds',
-	    :find    => '/bin/find',
-      :rm      => 'rm'
+    :find    => '/bin/find',
+    :rm      => 'rm'
 
-  mk_resource_methods            
+  mk_resource_methods
   @ignore_dirs = [
-  	"lost+found",
-  	"prescripts",
-  	"postscripts",
-  	"winpostscripts",
-  	"autoinst",
-  	]
+    "lost+found",
+    "prescripts",
+    "postscripts",
+    "winpostscripts",
+    "autoinst",
+  ]
 
   def initialize(value={})
     super(value)
@@ -29,7 +29,7 @@ Puppet::Type.type(:xcat_copycds).provide(:xcat) do
     root = "/install"
     maxdepth = 2
     mindepth = 2
-    
+
     cmd_list = [ root, "-maxdepth" , maxdepth, "-mindepth", mindepth ]
     begin
       output = find(cmd_list)
@@ -37,17 +37,17 @@ Puppet::Type.type(:xcat_copycds).provide(:xcat) do
       raise Puppet::DevError, "find #{cmd_list.join(' ')} had an error -> #{e.inspect}"
     end
 
-    obj_strs = output.lines.select { |s| 
+    obj_strs = output.lines.select { |s|
       validEntry? s
     }
   end
-  
-  def self.validEntry? (s) 
-    if s.count("/") <= 2 
+
+  def self.validEntry? (s)
+    if s.count("/") <= 2
       return false
     end
     @ignore_dirs.each { | ign |
-      if s.include? ign 
+      if s.include? ign
         return false
       end
     }
@@ -55,7 +55,7 @@ Puppet::Type.type(:xcat_copycds).provide(:xcat) do
   end
 
   def self.make_hash(obj_str)
-    if (obj_str == nil) 
+    if (obj_str == nil)
       return {}
     end
     obj_str = obj_str[9..-1]
@@ -82,28 +82,28 @@ Puppet::Type.type(:xcat_copycds).provide(:xcat) do
   def exists?
     @property_hash[:ensure] == :present
   end
-  
+
   def create
     @property_flush[:ensure] = :present
   end
-  
+
   def destroy
     @property_flush[:ensure] = :absent
   end
-  
+
   def flush
     if (@property_flush[:ensure] == :absent)
       # rmdef
       root = "/install"
-      if (resource[:distro] != nil) 
-      	root += "/#{resource[:distro]}"
+      if (resource[:distro] != nil)
+        root += "/#{resource[:distro]}"
         root += "/#{resource[:arch]}"
-      	begin
-      	  cmd_list = ["-rf", root]
-      	  rm(cmd_list)
-      	rescue Puppet::ExecutionFailure => e
-      	  raise Puppet::DevError, "rm #{cmd_list} failed to run: #{e}"
-      	end
+        begin
+          cmd_list = ["-rf", root]
+          rm(cmd_list)
+        rescue Puppet::ExecutionFailure => e
+          raise Puppet::DevError, "rm #{cmd_list} failed to run: #{e}"
+        end
       end
     else
       begin
@@ -112,6 +112,6 @@ Puppet::Type.type(:xcat_copycds).provide(:xcat) do
       rescue Puppet::ExecutionFailure => e
         raise Puppet::DevError, "copycds #{cmd_list} failed to run: #{e}"
       end
-    end      
+    end
   end
 end

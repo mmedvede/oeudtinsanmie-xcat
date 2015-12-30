@@ -11,6 +11,6 @@ define xcat::script(
     $myname = $filepath
   }
   $filepath = xcat_script($xcatroot, $myname)
-  
+
   ensure_resource(file, $myname, merge($fileparams), { path => $filepath })
 }

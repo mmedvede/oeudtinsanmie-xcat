@@ -6,8 +6,8 @@ class Puppet::Provider::Xcatobject < Puppet::Provider::Xcatprovider
   commands  :lsdef => '/opt/xcat/bin/lsdef',
             :mkdef => '/opt/xcat/bin/mkdef',
             :rmdef => '/opt/xcat/bin/rmdef',
-            :chdef => '/opt/xcat/bin/chdef'  
-         
+            :chdef => '/opt/xcat/bin/chdef'
+
   def initialize(value={})
     super(value)
     @property_flush = {}
@@ -18,7 +18,7 @@ class Puppet::Provider::Xcatobject < Puppet::Provider::Xcatprovider
       new(make_hash(obj))
     }
   end
-  
+
   def self.prefetch(resources)
     instances.each do |prov|
       if resource = resources[prov.name]
@@ -30,11 +30,11 @@ class Puppet::Provider::Xcatobject < Puppet::Provider::Xcatprovider
   def exists?
     @property_hash[:ensure] == :present
   end
-  
+
   def create
     @property_flush[:ensure] = :present
   end
-  
+
   def destroy
     @property_flush[:ensure] = :absent
   end
@@ -46,12 +46,12 @@ class Puppet::Provider::Xcatobject < Puppet::Provider::Xcatprovider
     rescue Puppet::ExecutionFailure => e
       raise Puppet::DevError, "lsdef #{cmd_list.join(' ')} had an error -> #{e.inspect}"
     end
-    
+
     obj_strs = output.split("Object name: ")
     obj_strs.delete("")
     obj_strs
   end
-  
+
   def self.make_hash(obj_str)
     hash_list = obj_str.split("\n")
     inst_name = hash_list.shift
@@ -60,8 +60,8 @@ class Puppet::Provider::Xcatobject < Puppet::Provider::Xcatprovider
     inst_hash[:ensure] = :present
     hash_list.each { |line|
       key, value = line.split("=")
-      
-      if (value.include? ",") then 
+
+      if (value.include? ",") then
         inst_hash[key.lstrip] = value.split(",")
       else
         inst_hash[key.lstrip] = value
@@ -83,7 +83,7 @@ class Puppet::Provider::Xcatobject < Puppet::Provider::Xcatprovider
     else
       resource.to_hash.each { |key, value|
         if not self.class.puppetkeywords.include?(key)
-          if (value.is_a?(Array)) then 
+          if (value.is_a?(Array)) then
             cmd_list += ["#{key}=#{value.join(',')}"]
             Puppet.debug "Setting #{key} = #{value.join(',')}"
           else

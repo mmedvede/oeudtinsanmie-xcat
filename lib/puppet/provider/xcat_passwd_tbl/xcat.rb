@@ -6,7 +6,7 @@ Puppet::Type.type(:xcat_passwd_tbl).provide(:xcat, :parent => Puppet::Provider::
   def self.xcat_tbl
     "passwd"
   end
-  
+
   def self.keycolumn
     "key"
   end

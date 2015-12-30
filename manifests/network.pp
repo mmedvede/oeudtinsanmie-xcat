@@ -1,12 +1,12 @@
 define xcat::network(
   $ensure = present,
-  $master_if, 
-  $master_mac, 
-  $master_ip, 
-  $vlan_alias_ip  = undef, 
-  $domain, 
-  $network, 
-  $netmask, 
+  $master_if,
+  $master_mac,
+  $master_ip,
+  $vlan_alias_ip  = undef,
+  $domain,
+  $network,
+  $netmask,
   $vlanid         = undef,
 ) {
   $default = {
@@ -23,24 +23,24 @@ define xcat::network(
 
   if $vlan_alias_ip == undef {
     $xcatnet = split($master_ip, '\.')
-    
+
     $add_interface = $master_if
     $gateway = $master_ip
   }
   else {
     $xcatnet = split($vlan_alias_ip, '\.')
     network::if::static { "${master_if}.${vlanid}" :
-      ensure      => 'up',
-      ipaddress   => $vlan_alias_ip,
-      netmask     => $netmask,
-      macaddress  => $master_mac,
-      vlan        => true,
-      domain      => $domain,
+      ensure     => 'up',
+      ipaddress  => $vlan_alias_ip,
+      netmask    => $netmask,
+      macaddress => $master_mac,
+      vlan       => true,
+      domain     => $domain,
     }
     $add_interface = "${master_if}.${vlanid}"
-    
-    $gateway = $vlan_alias_ip 
-  }     
+
+    $gateway = $vlan_alias_ip
+  }
   $nethash = {
     "${domain}" => {
       mgtifname   => $mgtifname,
@@ -51,9 +51,9 @@ define xcat::network(
       ensure => absent,
     }
   }
-  
+
   create_resources(xcat_network, $nethash, $default)
-  
+
   Xcat_site_attribute <| title == 'dhcpinterfaces' |> {
     value +> $add_interface,
   }

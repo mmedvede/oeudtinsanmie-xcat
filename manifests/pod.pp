@@ -1,8 +1,8 @@
 define xcat::pod(
   $ensure = present,
-  $private_hash, 
-  $ipmi_hash = undef, 
-  $defaults = undef, 
+  $private_hash,
+  $ipmi_hash = undef,
+  $defaults = undef,
   $nodes = undef,
 ) {
   if $private_hash == undef or $private_hash['master_if'] == undef {
@@ -14,7 +14,7 @@ define xcat::pod(
   if $private_hash['master_mac'] == undef {
     fail "vclmgmt::pod ${name} requires \$master_mac to be defined in \$private_hash"
   }
-  
+
   ensure_resource(xcat::network, $name, merge($private_hash, { ensure => $ensure, }) )
   if $ipmi_hash != undef and $ipmi_hash['master_if'] != undef {
     if $ipmi_hash['master_ip'] == undef {

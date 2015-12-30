@@ -14,8 +14,8 @@ Puppet::Type.newtype(:xcat_copycds) do
     desc 'The local location of the iso image to load.'
   end
 
-  newproperty(:arch) do 
+  newproperty(:arch) do
     desc 'The architecture of the linux distro on the ISO/DVD. Examples: x86, x86_64, ppc64, s390x.'
   end
-  
+
 end

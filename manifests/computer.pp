@@ -1,17 +1,17 @@
 define xcat::computer(
-  $ensure       = present, 
+  $ensure       = present,
   $hostname     = $title,
-  $private_ip, 
-  $private_mac, 
-  $private_if, 
-  $ipmi_ip       = undef, 
-  $ipmi_mac      = undef, 
-  $ipmi_user     = undef, 
-  $ipmi_pw       = undef, 
+  $private_ip,
+  $private_mac,
+  $private_if,
+  $ipmi_ip       = undef,
+  $ipmi_mac      = undef,
+  $ipmi_user     = undef,
+  $ipmi_pw       = undef,
   $master_ip,
   $xcat_groups   = [ 'ipmi', 'compute', 'all' ],
   $vcl_groups    = [ 'allComputers' ],
-  $tgt_os, 
+  $tgt_os,
   $tgt_arch      = undef,
   $profile,
   $username      = 'root',
@@ -27,7 +27,7 @@ define xcat::computer(
     bmc                 => "${hostname}-ipmi",
     bmcusername         => $ipmi_user,
     bmcpassword         => $ipmi_pw,
-    mgt                 => "ipmi",
+    mgt                 => 'ipmi',
     installnic          => 'bootif',
     primarynic          => $private_if,
     netboot             => $netboot,
@@ -45,10 +45,10 @@ define xcat::computer(
       fail "\$ipmi_ip IP Address ${ipmi_ip} needs a mac address defined in \$ipmi_mac"
     }
     xcat_node {  "${hostname}-ipmi" :
-      ensure  => $ensure,
-      groups  => [ "all" ],
-      ip      => $ipmi_ip,
-      mac     => $ipmi_mac,
-    }       
+      ensure => $ensure,
+      groups => [ 'all' ],
+      ip     => $ipmi_ip,
+      mac    => $ipmi_mac,
+    }
   }
 }

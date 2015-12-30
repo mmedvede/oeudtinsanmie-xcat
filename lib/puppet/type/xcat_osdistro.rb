@@ -3,7 +3,7 @@ Puppet::Type.newtype(:xcat_osdistro) do
   @doc = 'a logical object definition in the xCAT database.'
 
   ensurable
-  
+
   newparam(:osdistroname, :namevar=>true) do
     desc 'Unique name (e.g. rhels6.2-x86_64)'
   end
@@ -11,8 +11,8 @@ Puppet::Type.newtype(:xcat_osdistro) do
   newparam(:arch) do
     desc 'The OS distro arch (e.g. x86_64)'
   end
-  
-  newproperty(:basename) do 
+
+  newproperty(:basename) do
     desc 'The OS base name (e.g. rhels)'
   end
 

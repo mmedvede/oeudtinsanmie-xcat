@@ -101,14 +101,14 @@ define xcat::template(
   else {
     $post = $postscripts
   }
-  
+
   file { "${name}.tmpl" :
-    path => "${xcatroot}/share/xcat/install/${os}/${name}.tmpl",
+    path    => "${xcatroot}/share/xcat/install/${os}/${name}.tmpl",
     content => template('xcat/tmpl.erb'),
   }
-  
+
   file { "${name}.pkglist" :
-    path => "${xcatroot}/share/xcat/install/${os}/${name}.pkglist",
+    path    => "${xcatroot}/share/xcat/install/${os}/${name}.pkglist",
     content => template('xcat/pkglist.erb'),
   }
 }

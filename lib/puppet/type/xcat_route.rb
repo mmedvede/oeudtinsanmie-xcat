@@ -3,7 +3,7 @@ Puppet::Type.newtype(:xcat_route) do
   @doc = 'a logical object definition in the xCAT database.'
 
   ensurable
-  
+
   newparam(:routename, :namevar=>true) do
     desc 'Name used to identify this route.'
   end
@@ -11,8 +11,8 @@ Puppet::Type.newtype(:xcat_route) do
   newparam(:gateway) do
     desc 'The gateway that routes the ip traffic from the mn to the nodes. It is usually a service node.'
   end
-  
-  newproperty(:usercomment) do 
+
+  newproperty(:usercomment) do
     desc 'Any user-written notes.'
   end
 

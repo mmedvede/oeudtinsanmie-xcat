@@ -4,17 +4,17 @@ module Puppet::Parser::Functions
     poddefaults     = args[1]
     masterdefaults  = args[2]
 
-    private_default = { 
-      "master_if"   => masterdefaults["private_if"], 
-      "master_ip"   => masterdefaults["private_ip"], 
-      "master_mac"  => masterdefaults["private_mac"] 
+    private_default = {
+      "master_if"   => masterdefaults["private_if"],
+      "master_ip"   => masterdefaults["private_ip"],
+      "master_mac"  => masterdefaults["private_mac"]
     }
-    ipmi_default    = { 
-      "master_if"   => masterdefaults["ipmi_if"], 
-      "master_ip"   => masterdefaults["ipmi_ip"], 
-      "master_mac"  => masterdefaults["ipmi_mac"] 
+    ipmi_default    = {
+      "master_if"   => masterdefaults["ipmi_if"],
+      "master_ip"   => masterdefaults["ipmi_ip"],
+      "master_mac"  => masterdefaults["ipmi_mac"]
     }
-    
+
     if (poddefaults != nil and poddefaults["private_hash"] != nil) then
       private_default.merge!(poddefaults["private_hash"])
     end
@@ -32,7 +32,7 @@ module Puppet::Parser::Functions
 
       if (val["defaults"]["username"] == nil) then
           val["defaults"]["username"] = masterdefaults["system_user"]
-      end 
+      end
 
       if (val["defaults"]["password"] == nil) then
           val["defaults"]["password"] = masterdefaults["system_pw"]
