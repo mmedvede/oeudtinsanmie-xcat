@@ -1,7 +1,7 @@
 Puppet::Type.type(:xcat_copycds).provide(:xcat) do
 
   commands  :copycds => '/opt/xcat/sbin/copycds',
-    :find    => '/bin/find',
+    :find    => 'find',
     :rm      => 'rm'
 
   mk_resource_methods
